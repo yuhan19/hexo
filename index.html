@@ -62,6 +62,111 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Vagrantfile-4-Configure-IDE-in-VM-for-Mac" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/31/Vagrantfile-4-Configure-IDE-in-VM-for-Mac/" class="article-date">
+  <time datetime="2018-12-31T22:57:34.000Z" itemprop="datePublished">2018-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/31/Vagrantfile-4-Configure-IDE-in-VM-for-Mac/">Vagrantfile&lt;4&gt;--Configure IDE inside of VM for Mac</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>When using Vagrant for a project, we have two options.</p>
+<ol>
+<li>Using all development tools including IDE to <strong>edit code and compile in host, then run in VM</strong>.<ul>
+<li><ul>
+<li>better performance</li>
+</ul>
+</li>
+<li><ul>
+<li>synced_folder allows us to synchronize codes between VM and local.</li>
+</ul>
+</li>
+<li><ul>
+<li>hard to fix once mess up local development environment (like me !!!)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Having another set of development tools in VM, developer <strong>writes code, compile and deploy in VM</strong>.<ul>
+<li><ul>
+<li>consistency: ensure the same development environment </li>
+</ul>
+</li>
+<li><ul>
+<li>lantency: GUI and Compiling. In SED, if I wanna use developer machine (like a high performance desktop), I have to ssh into server then vagrant ssh into VMs. We are now suffering high GUI latency when using IntelliJ in this situation (5 seconds for searching panel to show up). It is 2 X Forwarding, boss said it is an existing official bug.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>In this blog, I will introduce these two methods.</p>
+<h2 id="IDE-in-host"><a href="#IDE-in-host" class="headerlink" title="IDE in host"></a>IDE in host</h2><p>This is achieved by a <a href="https://www.vagrantup.com/docs/synced-folders/" target="_blank" rel="noopener">synced folder</a> functionality of Vagrant. Introduced in <a href="https://yuhan19.github.io/2018/12/15/Vagrantfile-2-Vagrantfile/" target="_blank" rel="noopener">Vagrantfile<2>–Vagrantfile</2></a><br>It synchronizes folder between VM and host.</p>
+<p>Demo:<br><img src="/2018/12/31/Vagrantfile-4-Configure-IDE-in-VM-for-Mac/synced_folder.gif" alt=""></p>
+<h2 id="IDE-in-VM-Mac"><a href="#IDE-in-VM-Mac" class="headerlink" title="IDE in VM (Mac)"></a>IDE in VM (Mac)</h2><p>Relates keyword: DISPLAY, xhost, XForwarding, X Server,  X Client</p>
+<p>It is a little bit more complicated.<br>Basically, when running intelliJ, we should have a GUI window pop up. What we have to do now is to forward this window from VM to our host. </p>
+<h3 id="Some-notations"><a href="#Some-notations" class="headerlink" title="Some notations:"></a>Some notations:</h3><ul>
+<li>DISPLAY: an environment variable that indicates where to show this window.<ul>
+<li>Format: DISPLAY=IP:displaynumber.screennumber</li>
+<li>e.g. DISPLAY=:0.0 show window in local</li>
+</ul>
+</li>
+<li>xhost: a list that is allowed to make connections to the X server</li>
+<li>X Forwarding: Using X forwarding in an SSH session on your personal computer allows you to securely run graphical applications </li>
+<li>X Server: e.g. host. It supplies screen for VM</li>
+<li>X Client: e.g. VM. It uses the screen supplied by host.</li>
+</ul>
+<h3 id="Steps-in-theory"><a href="#Steps-in-theory" class="headerlink" title="Steps in theory"></a>Steps in theory</h3><ol>
+<li>Run a X Server in host (XQuartz for mac)</li>
+<li>Use X forwarding when ssh into VM</li>
+<li>Set proper DISPLAY in VM </li>
+<li>Run idea in VM</li>
+</ol>
+<h3 id="In-Mac"><a href="#In-Mac" class="headerlink" title="In Mac"></a>In Mac</h3><ol>
+<li>Install <code>XQuartz</code>, an Mac version of X Server.<code>brew cask install xquartz</code></li>
+<li>Mac DISPLAY should already be set to DISPLAY=/private/tmp/com.apple.launchd.GxQDyjI1Mr/org.macosforge.xquartz:0</li>
+<li><code>vagrant ssh vm -- -X</code>, -X relates to X forwarding.</li>
+<li>Run idea in VM</li>
+</ol>
+<h3 id="Common-errors"><a href="#Common-errors" class="headerlink" title="Common errors"></a>Common errors</h3><ul>
+<li><p>Without X Server set.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ui:/synced_folder/idea-IC-183.4588.61/bin$ ./idea.sh</span><br><span class="line">Startup Error: Unable to detect graphics environment</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Set DISPLAY in VM wihout X Server set.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ui:/synced_folder/idea-IC-183.4588.61/bin$ ./idea.sh</span><br><span class="line"></span><br><span class="line">Start Failed: Failed to initialize graphics environment</span><br><span class="line"></span><br><span class="line">java.awt.AWTError: Can&apos;t connect to X11 window server using &apos;:0.0&apos; as the value of the DISPLAY variable.</span><br><span class="line"> at sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)</span><br><span class="line"> at sun.awt.X11GraphicsEnvironment.access$200(X11GraphicsEnvironment.java:65)</span><br><span class="line"> at sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:115)</span><br><span class="line"> at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line"> at sun.awt.X11GraphicsEnvironment.&lt;clinit&gt;(X11GraphicsEnvironment.java:74)</span><br><span class="line"> at java.lang.Class.forName0(Native Method)</span><br><span class="line"> at java.lang.Class.forName(Class.java:264)</span><br><span class="line"> at java.awt.GraphicsEnvironment.createGE(GraphicsEnvironment.java:103)</span><br><span class="line"> at java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:82)</span><br><span class="line"> at sun.awt.X11.XToolkit.&lt;clinit&gt;(XToolkit.java:128)</span><br><span class="line"> at java.lang.Class.forName0(Native Method)</span><br><span class="line"> at java.lang.Class.forName(Class.java:264)</span><br><span class="line"> at java.awt.Toolkit$2.run(Toolkit.java:860)</span><br><span class="line"> at java.awt.Toolkit$2.run(Toolkit.java:855)</span><br><span class="line"> at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line"> at java.awt.Toolkit.getDefaultToolkit(Toolkit.java:854)</span><br><span class="line"> at com.intellij.ui.AppUIUtil.updateFrameClass(AppUIUtil.java:161)</span><br><span class="line"> at com.intellij.idea.StartupUtil.prepareAndStart(StartupUtil.java:94)</span><br><span class="line"> at com.intellij.idea.MainImpl.start(MainImpl.java:20)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line"> at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line"> at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line"> at com.intellij.ide.plugins.PluginManager.lambda$start$0(PluginManager.java:75)</span><br><span class="line"> at java.lang.Thread.run(Thread.java:745)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><ul>
+<li><a href="https://stackoverflow.com/questions/17625421/vagrant-for-a-java-project-should-you-compile-in-the-vm-or-on-the-host" target="_blank" rel="noopener">https://stackoverflow.com/questions/17625421/vagrant-for-a-java-project-should-you-compile-in-the-vm-or-on-the-host</a></li>
+<li><a href="https://blog.csdn.net/jlds123/article/details/6834287" target="_blank" rel="noopener">https://blog.csdn.net/jlds123/article/details/6834287</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-IDE-in-VM-for-Mac/" data-id="cjqepo47y0004kd0sgridtgpx" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Vagrantfile-2-Vagrantfile" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/15/Vagrantfile-2-Vagrantfile/" class="article-date">
@@ -146,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/15/Vagrantfile-2-Vagrantfile/" data-id="cjpqbmxaa0003n90sx98ko1im" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/15/Vagrantfile-2-Vagrantfile/" data-id="cjqepo47w0003kd0sljrwpmcm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vagrantfile/">Vagrantfile</a></li></ul>
@@ -354,7 +459,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/Vagrantfile-1-Introduction-Commands/" data-id="cjpqbmxa40001n90s5sob0hz8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/Vagrantfile-1-Introduction-Commands/" data-id="cjqepo47n0001kd0sfdobe03r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vagrantfile/">Vagrantfile</a></li></ul>
@@ -416,7 +521,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/Learning-Note-iOS/" data-id="cjpqbmx9x0000n90sgbym89sp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/Learning-Note-iOS/" data-id="cjqepo47c0000kd0s0j8skwug" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -473,6 +578,10 @@
       <ul>
         
           <li>
+            <a href="/2018/12/31/Vagrantfile-4-Configure-IDE-in-VM-for-Mac/">Vagrantfile&lt;4&gt;--Configure IDE inside of VM for Mac</a>
+          </li>
+        
+          <li>
             <a href="/2018/12/15/Vagrantfile-2-Vagrantfile/">Vagrantfile&lt;2&gt;--Vagrantfile</a>
           </li>
         
@@ -496,7 +605,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
+      &copy; 2019 John Doe<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

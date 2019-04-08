@@ -302,6 +302,186 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/07/Flask-2-Dispatching-Request/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="呆阿呆阿呆">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="呆呆窝">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/07/Flask-2-Dispatching-Request/" class="post-title-link" itemprop="url">Flask-2-Dispatching-Request</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-07 17:56:52 / Modified: 18:24:42" itemprop="dateCreated datePublished" datetime="2019-04-07T17:56:52-06:00">2019-04-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="A-simple-Flask-server"><a href="#A-simple-Flask-server" class="headerlink" title="A simple Flask server"></a>A simple Flask server</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"> </span><br><span class="line"><span class="meta">@app.route('/') # -------------------- 2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run() <span class="comment"># ---------------------- 1</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-Flask-Request-Entry"><a href="#1-Flask-Request-Entry" class="headerlink" title="1 Flask Request Entry"></a>1 Flask Request Entry</h2><p>This is a simple werkzeug server</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.wrappers <span class="keyword">import</span> Request, Response</span><br><span class="line"></span><br><span class="line"><span class="meta">@Request.application</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> Response(<span class="string">'Hello World!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> werkzeug.serving <span class="keyword">import</span> run_simple</span><br><span class="line">    <span class="comment"># listen to `http://localhost:4000/` and do a hello() once we visit it.</span></span><br><span class="line">    run_simple(<span class="string">'localhost'</span>, <span class="number">4000</span>, hello)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>app.run()</code>: bases on <code>werkzeug.serving.run_simple(host, port, self, **options)</code>. So once we visit its route, the entry of Flask application is app(), which is the <code>Flask.__call__</code>.</li>
+<li><code>Flask.__call__</code>: use wsgi_app <ul>
+<li><code>return self.wsgi_app(environ, start_response)</code></li>
+</ul>
+</li>
+<li>In the end, the real entry is <code>wsgi_app(environ, start_response)</code></li>
+</ul>
+<h2 id="2-Route-Register"><a href="#2-Route-Register" class="headerlink" title="2 Route Register"></a>2 Route Register</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br></pre></td></tr></table></figure>
+<p>This <a href="https://yuhan19.github.io/2019/01/13/Flask-1-Decorator/" target="_blank" rel="noopener">Python Decorator</a> is equivalant to</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World"</span></span><br><span class="line">app.route(<span class="string">"/"</span>)(hello_world)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>app.route()</code>:  base on self.add_url_rule(rule, endpoint, f, **options). It binds a function with a url. So these two are equivalant </p>
+<ul>
+<li><code>app.add_url_rule(&quot;/&quot;, hello_world.__name__, hello_world)</code></li>
+<li><code>app.route(&quot;/&quot;)(hello_world)</code></li>
+</ul>
+</li>
+<li><p><code>add_url_rule(rule, endpoint, view_func)</code>:</p>
+<ul>
+<li><code>rule = self.url_rule_class(rule, methods=methods, **options)</code>: combine url, methods(post, get…), endpoint together</li>
+<li><code>self.url_map.add(rule)</code>: this url_map is werkzeug.routing.Map</li>
+<li><code>self.view_function[endpoint] = view_func</code>, it binds endpoint with function and is used when dispatching request</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-Dispatching-Request"><a href="#3-Dispatching-Request" class="headerlink" title="3 Dispatching Request"></a>3 Dispatching Request</h2><p>From <a href="#1-Flask-Request-Entry">Flask Request Entry</a>, the real request entry is <code>wsgi_app(environ, start_response)</code>, What does it do with the Routing system ?</p>
+<ol>
+<li>push <code>request_context</code> into context</li>
+<li><code>Flask.dispatch_request</code><ul>
+<li><code>return self.view_functions[rule.endpoint](**req.view_args)</code></li>
+</ul>
+</li>
+</ol>
+<p>Finally, it is equal to <code>return hello_world()</code></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/10/Robotframework-Learning-Note/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1276,178 +1456,6 @@ get_keyword_types
 </ul>
 <h3 id="4-3-4-Listeners-logging"><a href="#4-3-4-Listeners-logging" class="headerlink" title="4.3.4   Listeners logging"></a>4.3.4   Listeners logging</h3><h3 id="4-3-5-Listener-examples"><a href="#4-3-5-Listener-examples" class="headerlink" title="4.3.5   Listener examples"></a>4.3.5   Listener examples</h3><h3 id="4-3-6-Test-libraries-as-listeners"><a href="#4-3-6-Test-libraries-as-listeners" class="headerlink" title="4.3.6   Test libraries as listeners"></a>4.3.6   Test libraries as listeners</h3><p>It is like combine library with listener</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class PythonLibraryAsListenerItself(object):</span><br><span class="line">    ROBOT_LIBRARY_SCOPE = <span class="string">'TEST SUITE'</span></span><br><span class="line">    ROBOT_LISTENER_API_VERSION = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="function">        self.ROBOT_LIBRARY_LISTENER </span>= self</span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">_end_suite</span><span class="params">(self, name, attrs)</span>:</span></span><br><span class="line"><span class="function">        print 'Suite %<span class="title">s</span> <span class="params">(%s)</span> ending.' % <span class="params">(name, attrs[<span class="string">'id'</span>])</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    # actual library code here ...</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/18/未命名/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="呆阿呆阿呆">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="呆呆窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/18/未命名/" class="post-title-link" itemprop="url">Untitled</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-02-18 23:09:27" itemprop="dateCreated datePublished" datetime="2019-02-18T23:09:27-06:00">2019-02-18</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>werkzeug</p>
-<p> This is a simple werkzeug server. </p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.wrappers <span class="keyword">import</span> Request, Response</span><br><span class="line"></span><br><span class="line"><span class="meta">@Request.application</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">application</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> Response(<span class="string">'Hello World!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> werkzeug.serving <span class="keyword">import</span> run_simple</span><br><span class="line">    run_simple(<span class="string">'localhost'</span>, <span class="number">4000</span>, application)</span><br></pre></td></tr></table></figure>
-<p> run_simple(): listen to <code>http://localhost:4000/</code> and do an <code>application()</code> once we visit it.</p>
-</li>
-<li><p>Flask Request Entry</p>
-<p> This is a simple Flask server</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>app.run(): After loading arguments as some configs, it runs <code>run_simple(host, port, self, **options)</code>. So once we visit its route, the entry of Flask application is app(), which is the <code>__call__</code> method of Flask class. </li>
-<li>__call__: calls <code>def wsgi_app(self, environ, start_response)</code></li>
-<li>In the end, the real entry is <code>wsgi_app</code></li>
-</ul>
-</li>
-<li><p>Route registration </p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World"</span></span><br></pre></td></tr></table></figure>
-<p> Is equivalant to</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World"</span></span><br><span class="line">    </span><br><span class="line">app.route(<span class="string">"/"</span>)(hello_world)</span><br></pre></td></tr></table></figure>
-<p> app.route(): binds a function with a url. It calls self.add_url_rule(rule, endpoint, f, **options), and endpoint default to function name. So it is equivalant to</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.add_url_rule(<span class="string">"/"</span>, hello_world.__name__, hello_world)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<pre><code>add\_url\_rule(rule, endpoint, view_func): 
-* `self.url_map.add(rule)`: this url_map is werkzeug.routing.Map, we can define converter in it and use it in @app.route(...)
-* `self.view_function[endpoint] = view_func`, it binds endpoint with function and is used when dispatching request
-</code></pre><ol start="4">
-<li>Template<ul>
-<li>Default folder is set in Flask()</li>
-<li>We can parse function, parameter from Python to template</li>
-<li>Extends, Import, Loop, Function, If, Filters, Pipes</li>
-</ul>
-</li>
-</ol>
-
           
         
       

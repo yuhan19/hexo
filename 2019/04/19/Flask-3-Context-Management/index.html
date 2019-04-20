@@ -96,25 +96,28 @@
 
 
 
-  <meta name="description" content="A simple Flask server123456789from flask import Flaskapp = Flask(__name__) @app.route(&apos;/&apos;) # -------------------- 2def hello_world():    return &apos;Hello World!&apos; if __name__ == &apos;__main__&apos;:    app.run() #">
+  <meta name="description" content="Context Management1 Storage ManagementFlask support Coroutines by dict and greenlet.getcurrent, it allocates space for each greenlet and store them in a dictionary  create a dictionary called __storag">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flask-2-Dispatching-Request">
-<meta property="og:url" content="http://yoursite.com/2019/04/07/Flask-2-Dispatching-Request/index.html">
+<meta property="og:title" content="Flask-3-Context-Management">
+<meta property="og:url" content="http://yoursite.com/2019/04/19/Flask-3-Context-Management/index.html">
 <meta property="og:site_name" content="呆呆窝">
-<meta property="og:description" content="A simple Flask server123456789from flask import Flaskapp = Flask(__name__) @app.route(&apos;/&apos;) # -------------------- 2def hello_world():    return &apos;Hello World!&apos; if __name__ == &apos;__main__&apos;:    app.run() #">
+<meta property="og:description" content="Context Management1 Storage ManagementFlask support Coroutines by dict and greenlet.getcurrent, it allocates space for each greenlet and store them in a dictionary  create a dictionary called __storag">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-08T00:24:42.965Z">
+<meta property="og:image" content="http://yoursite.com/2019/04/19/Flask-3-Context-Management/ctx.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/19/Flask-3-Context-Management/ctx_request.png">
+<meta property="og:updated_time" content="2019-04-20T01:20:50.253Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flask-2-Dispatching-Request">
-<meta name="twitter:description" content="A simple Flask server123456789from flask import Flaskapp = Flask(__name__) @app.route(&apos;/&apos;) # -------------------- 2def hello_world():    return &apos;Hello World!&apos; if __name__ == &apos;__main__&apos;:    app.run() #">
+<meta name="twitter:title" content="Flask-3-Context-Management">
+<meta name="twitter:description" content="Context Management1 Storage ManagementFlask support Coroutines by dict and greenlet.getcurrent, it allocates space for each greenlet and store them in a dictionary  create a dictionary called __storag">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/19/Flask-3-Context-Management/ctx.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/07/Flask-2-Dispatching-Request/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/19/Flask-3-Context-Management/">
 
 
 
@@ -124,7 +127,7 @@
   };
 </script>
 
-  <title>Flask-2-Dispatching-Request | 呆呆窝</title>
+  <title>Flask-3-Context-Management | 呆呆窝</title>
   
 
 
@@ -306,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/07/Flask-2-Dispatching-Request/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/Flask-3-Context-Management/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="呆阿呆阿呆">
@@ -323,7 +326,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Flask-2-Dispatching-Request
+          <h1 class="post-title" itemprop="name headline">Flask-3-Context-Management
 
               
             
@@ -349,7 +352,7 @@
                 
               
 
-              <time title="Created: 2019-04-07 17:56:52 / Modified: 18:24:42" itemprop="dateCreated datePublished" datetime="2019-04-07T17:56:52-06:00">2019-04-07</time>
+              <time title="Created: 2019-04-19 18:26:28 / Modified: 19:20:50" itemprop="dateCreated datePublished" datetime="2019-04-19T18:26:28-06:00">2019-04-19</time>
             
 
             
@@ -388,44 +391,33 @@
       
 
       
-        <h1 id="A-simple-Flask-server"><a href="#A-simple-Flask-server" class="headerlink" title="A simple Flask server"></a>A simple Flask server</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"> </span><br><span class="line"><span class="meta">@app.route('/') # -------------------- 2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run() <span class="comment"># ---------------------- 1</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-Flask-Request-Entry"><a href="#1-Flask-Request-Entry" class="headerlink" title="1 Flask Request Entry"></a>1 Flask Request Entry</h2><p>This is a simple werkzeug server</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.wrappers <span class="keyword">import</span> Request, Response</span><br><span class="line"></span><br><span class="line"><span class="meta">@Request.application</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> Response(<span class="string">'Hello World!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> werkzeug.serving <span class="keyword">import</span> run_simple</span><br><span class="line">    <span class="comment"># listen to `http://localhost:4000/` and do a hello() once we visit it.</span></span><br><span class="line">    run_simple(<span class="string">'localhost'</span>, <span class="number">4000</span>, hello)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>app.run()</code>: bases on <code>werkzeug.serving.run_simple(host, port, self, **options)</code>. So once we visit its route, the entry of Flask application is app(), which is the <code>Flask.__call__</code>.</li>
-<li><code>Flask.__call__</code>: use wsgi_app <ul>
-<li><code>return self.wsgi_app(environ, start_response)</code></li>
-</ul>
-</li>
-<li>In the end, the real entry is <code>wsgi_app(environ, start_response)</code></li>
-</ul>
-<h2 id="2-Route-Register"><a href="#2-Route-Register" class="headerlink" title="2 Route Register"></a>2 Route Register</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br></pre></td></tr></table></figure>
-<p>This <a href="https://yuhan19.github.io/2019/01/13/Flask-1-Decorator/" target="_blank" rel="noopener">Python Decorator</a> is equivalant to</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World"</span></span><br><span class="line">app.route(<span class="string">"/"</span>)(hello_world)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>app.route()</code>:  base on self.add_url_rule(rule, endpoint, f, **options). It binds a function with a url. So these two are equivalant </p>
-<ul>
-<li><code>app.add_url_rule(&quot;/&quot;, hello_world.__name__, hello_world)</code></li>
-<li><code>app.route(&quot;/&quot;)(hello_world)</code></li>
-</ul>
-</li>
-<li><p><code>add_url_rule(rule, endpoint, view_func)</code>:</p>
-<ul>
-<li><code>rule = self.url_rule_class(rule, methods=methods, **options)</code>: combine url, methods(post, get…), endpoint together</li>
-<li><code>self.url_map.add(rule)</code>: this url_map is werkzeug.routing.Map</li>
-<li><code>self.view_function[endpoint] = view_func</code>, it binds endpoint with function and is used when dispatching request</li>
-</ul>
-</li>
-</ul>
-<h2 id="3-Dispatching-Request"><a href="#3-Dispatching-Request" class="headerlink" title="3 Dispatching Request"></a>3 Dispatching Request</h2><p>From <a href="#1-Flask-Request-Entry">Flask Request Entry</a>, the real request entry is <code>wsgi_app(environ, start_response)</code>, What does it do with the Routing system ?</p>
+        <h1 id="Context-Management"><a href="#Context-Management" class="headerlink" title="Context Management"></a>Context Management</h1><h2 id="1-Storage-Management"><a href="#1-Storage-Management" class="headerlink" title="1 Storage Management"></a>1 Storage Management</h2><p>Flask support Coroutines by dict and <code>greenlet.getcurrent</code>, it allocates space for each greenlet and store them in a dictionary</p>
 <ol>
-<li>push <code>request_context</code> into context</li>
-<li><code>Flask.dispatch_request</code><ul>
-<li><code>return self.view_functions[rule.endpoint](**req.view_args)</code></li>
-</ul>
-</li>
+<li>create a dictionary called <code>__storage__</code></li>
+<li>set, get from <code>__storage__</code> using <code>greenlet.getcurrent</code> as key</li>
 </ol>
-<p>Finally, it is equal to <code>return hello_world()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> greenlet <span class="keyword">import</span> getcurrent <span class="keyword">as</span> get_ident</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">from</span> thread <span class="keyword">import</span> get_ident</span><br><span class="line">    <span class="keyword">except</span> ImportError:</span><br><span class="line">        <span class="keyword">from</span> _thread <span class="keyword">import</span> get_ident</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Local</span><span class="params">(object)</span>:</span></span><br><span class="line">    __slots__ = (<span class="string">'__storage__'</span>, <span class="string">'__ident_func__'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        object.__setattr__(self, <span class="string">'__storage__'</span>, &#123;&#125;)</span><br><span class="line">        object.__setattr__(self, <span class="string">'__ident_func__'</span>, get_ident)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(self.__storage__.items())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, proxy)</span>:</span></span><br><span class="line">        <span class="string">"""Create a proxy for a name."""</span></span><br><span class="line">        <span class="keyword">return</span> LocalProxy(self, proxy)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__release_local__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.__storage__.pop(self.__ident_func__(), <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> self.__storage__[self.__ident_func__()][name]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        ident = self.__ident_func__()</span><br><span class="line">        storage = self.__storage__</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            storage[ident][name] = value</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            storage[ident] = &#123;name: value&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">del</span> self.__storage__[self.__ident_func__()][name]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(name)</span><br></pre></td></tr></table></figure>
+<h2 id="2-Request-Context"><a href="#2-Request-Context" class="headerlink" title="2 Request Context"></a>2 Request Context</h2><ul>
+<li>Request context includes request and session</li>
+<li>Basically, each request comes<ol>
+<li>Capsulate <code>environ</code> into a <code>RequestContext</code> object</li>
+<li>Add it into <code>__storage__</code> dictionary</li>
+<li>Dispatch request to each view file and do operation</li>
+<li>Remove it from <code>__storage__</code> dictionary</li>
+</ol>
+</li>
+</ul>
+<p>Picture for step 1, 2, 4</p>
+<p><img src="/2019/04/19/Flask-3-Context-Management/ctx.png" alt="RequestContext"></p>
+<p>Picture for step 3 example</p>
+<p><img src="/2019/04/19/Flask-3-Context-Management/ctx_request.png" alt="Request"></p>
+<blockquote>
+<p><code>partial()</code>: it is quite funcional programming<br><code>object.__setattr__(self, &#39;_LocalProxy__local&#39;, local)</code>: stuck here for quite a while. <a href="https://docs.python.org/3.7/tutorial/classes.html#private-variables" target="_blank" rel="noopener">python3 documentation</a></p>
+</blockquote>
+<h2 id="3-App-Context"><a href="#3-App-Context" class="headerlink" title="3 App Context"></a>3 App Context</h2><ul>
+<li>It is quite similar as Request Context</li>
+<li>It includes <code>current_app</code> and <code>g</code></li>
+</ul>
 
       
     </div>
@@ -462,8 +454,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/10/Robotframework-Learning-Note/" rel="next" title="Robotframework Learning Note">
-                <i class="fa fa-chevron-left"></i> Robotframework Learning Note
+              <a href="/2019/04/07/Flask-2-Dispatching-Request/" rel="next" title="Flask-2-Dispatching-Request">
+                <i class="fa fa-chevron-left"></i> Flask-2-Dispatching-Request
               </a>
             
           </div>
@@ -471,10 +463,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/19/Flask-3-Context-Management/" rel="prev" title="Flask-3-Context-Management">
-                Flask-3-Context-Management <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -605,7 +593,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-simple-Flask-server"><span class="nav-text">A simple Flask server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Flask-Request-Entry"><span class="nav-text">1 Flask Request Entry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Route-Register"><span class="nav-text">2 Route Register</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Dispatching-Request"><span class="nav-text">3 Dispatching Request</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Context-Management"><span class="nav-text">Context Management</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Storage-Management"><span class="nav-text">1 Storage Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Request-Context"><span class="nav-text">2 Request Context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-App-Context"><span class="nav-text">3 App Context</span></a></li></ol></li></ol></div>
             
 
           </div>

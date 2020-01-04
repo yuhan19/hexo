@@ -98,24 +98,24 @@
 
   <meta name="description" content="When using Vagrant for a project, we have two options.  Using all development tools including IDE to edit code and compile in host, then run in VM.  better performance    synced_folder allows us to sy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vagrantfile&lt;4&gt;--Configure GUI inside of VM for Mac">
-<meta property="og:url" content="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/index.html">
+<meta property="og:title" content="Vagrantfile&lt;3&gt;--Configure GUI inside of VM for Mac">
+<meta property="og:url" content="http://yoursite.com/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/index.html">
 <meta property="og:site_name" content="呆呆窝">
 <meta property="og:description" content="When using Vagrant for a project, we have two options.  Using all development tools including IDE to edit code and compile in host, then run in VM.  better performance    synced_folder allows us to sy">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif">
-<meta property="og:updated_time" content="2019-01-02T05:04:42.441Z">
+<meta property="og:image" content="http://yoursite.com/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif">
+<meta property="og:updated_time" content="2020-01-04T02:04:37.368Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vagrantfile&lt;4&gt;--Configure GUI inside of VM for Mac">
+<meta name="twitter:title" content="Vagrantfile&lt;3&gt;--Configure GUI inside of VM for Mac">
 <meta name="twitter:description" content="When using Vagrant for a project, we have two options.  Using all development tools including IDE to edit code and compile in host, then run in VM.  better performance    synced_folder allows us to sy">
-<meta name="twitter:image" content="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>Vagrantfile<4>--Configure GUI inside of VM for Mac | 呆呆窝</4></title>
+  <title>Vagrantfile<3>--Configure GUI inside of VM for Mac | 呆呆窝</3></title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="呆阿呆阿呆">
@@ -324,11 +324,11 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Vagrantfile<4>--Configure GUI inside of VM for Mac
+          <h1 class="post-title" itemprop="name headline">Vagrantfile<3>--Configure GUI inside of VM for Mac
 
               
             
-          </4></h1>
+          </3></h1>
         
 
         <div class="post-meta">
@@ -367,7 +367,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-01-01 23:04:42" itemprop="dateModified" datetime="2019-01-01T23:04:42-06:00">2019-01-01</time>
+                <time title="Modified: 2020-01-03 20:04:37" itemprop="dateModified" datetime="2020-01-03T20:04:37-06:00">2020-01-03</time>
               
             
           </span>
@@ -432,7 +432,7 @@
 </ol>
 <p>In this blog, I will introduce these two methods.</p>
 <h2 id="IDE-in-host"><a href="#IDE-in-host" class="headerlink" title="IDE in host"></a>IDE in host</h2><p>This is achieved by a <a href="https://www.vagrantup.com/docs/synced-folders/" target="_blank" rel="noopener">synced folder</a> functionality of Vagrant. Introduced in <a href="https://yuhan19.github.io/2018/12/15/Vagrantfile-2-Vagrantfile/" target="_blank" rel="noopener">Vagrantfile<2>–Vagrantfile</2></a><br>It synchronizes folder between VM and host.</p>
-<p>Demo:<br><img src="/2018/12/31/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif" alt=""></p>
+<p>Demo:<br><img src="/2018/12/31/Vagrantfile-3-Configure-GUI-in-VM-for-Mac/Vagrantfile-4-Configure-GUI-in-VM-for-Mac/synced_folder.gif" alt=""></p>
 <h2 id="IDE-in-VM-Mac"><a href="#IDE-in-VM-Mac" class="headerlink" title="IDE in VM (Mac)"></a>IDE in VM (Mac)</h2><p>Relates keyword: DISPLAY, xhost, XForwarding, X Server,  X Client</p>
 <p>It is a little bit more complicated.<br>Basically, when running intelliJ, we should have a GUI window pop up. What we have to do now is to forward this window from VM to our host. </p>
 <h3 id="Some-notations"><a href="#Some-notations" class="headerlink" title="Some notations:"></a>Some notations:</h3><ul>
@@ -584,7 +584,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -607,7 +607,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
@@ -663,7 +665,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

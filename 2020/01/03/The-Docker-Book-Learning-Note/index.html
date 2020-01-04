@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Chapter1 Introduction Components Client&amp;amp;Server Client talk to Server(Daemon) by API   Docker Images “source code” of Container    Registries Store the images   Docker Container Running/Executing a">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Docker Book Learning Note">
+<meta property="og:url" content="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/index.html">
+<meta property="og:site_name" content="呆呆窝">
+<meta property="og:description" content="Chapter1 Introduction Components Client&amp;amp;Server Client talk to Server(Daemon) by API   Docker Images “source code” of Container    Registries Store the images   Docker Container Running/Executing a">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/docker-architecture.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/swarm-diagram.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/services-diagram.png">
+<meta property="og:updated_time" content="2020-01-04T04:00:54.289Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Docker Book Learning Note">
+<meta name="twitter:description" content="Chapter1 Introduction Components Client&amp;amp;Server Client talk to Server(Daemon) by API   Docker Images “source code” of Container    Registries Store the images   Docker Container Running/Executing a">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/docker-architecture.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>The Docker Book Learning Note | 呆呆窝</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">呆呆窝</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/03/The-Docker-Book-Learning-Note/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="呆阿呆阿呆">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="呆呆窝">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">The Docker Book Learning Note
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-01-03 19:50:38 / Modified: 22:00:54" itemprop="dateCreated datePublished" datetime="2020-01-03T19:50:38-06:00">2020-01-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Chapter1-Introduction"><a href="#Chapter1-Introduction" class="headerlink" title="Chapter1 Introduction"></a>Chapter1 Introduction</h1><ul>
+<li>Components<ul>
+<li>Client&amp;Server<ul>
+<li>Client talk to Server(Daemon) by API</li>
+</ul>
+</li>
+<li>Docker Images<ul>
+<li>“source code” of Container </li>
+</ul>
+</li>
+<li>Registries<ul>
+<li>Store the images</li>
+</ul>
+</li>
+<li>Docker Container<ul>
+<li>Running/Executing aspect in Docker life cycle </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/01/03/The-Docker-Book-Learning-Note/docker-architecture.png" alt="DockerArch"></p>
+<ul>
+<li>Application<ul>
+<li>Make local development and build workflow faster </li>
+<li>Running stand-alone services and applications consistently across multiple environments</li>
+<li>Create isolated instances to run tests by Jenkins CI </li>
+<li>Building and testing complex applications and architectures on a local host</li>
+</ul>
+</li>
+</ul>
+<h1 id="Chapter2-Installation"><a href="#Chapter2-Installation" class="headerlink" title="Chapter2 Installation"></a>Chapter2 Installation</h1><h1 id="Chapter3-Getting-Start"><a href="#Chapter3-Getting-Start" class="headerlink" title="Chapter3 Getting Start"></a>Chapter3 Getting Start</h1><h2 id="Commands"><a href="#Commands" class="headerlink" title="Commands"></a>Commands</h2><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker info</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker run</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>-i</td>
+<td>STDIN open</td>
+</tr>
+<tr>
+<td></td>
+<td>-t</td>
+<td>provides an interactive shell</td>
+</tr>
+<tr>
+<td></td>
+<td>-d</td>
+<td>detach the container to background</td>
+</tr>
+<tr>
+<td></td>
+<td>-c</td>
+<td>run with command</td>
+</tr>
+<tr>
+<td></td>
+<td>-p</td>
+<td>network ports Docker publishes at runtime</td>
+</tr>
+<tr>
+<td></td>
+<td>-P</td>
+<td>allows us to publish all ports we’ve exposed via EXPOSE instructions in our Dockerfile</td>
+</tr>
+<tr>
+<td></td>
+<td>–name</td>
+<td>create container with name</td>
+</tr>
+<tr>
+<td></td>
+<td>–log-driver</td>
+<td>control the logging driver used by your daemon and container</td>
+</tr>
+<tr>
+<td></td>
+<td>–restart</td>
+<td>always<br>on-failure:5</td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td></td>
+<td>display running container</td>
+</tr>
+<tr>
+<td></td>
+<td>-a</td>
+<td>all container</td>
+</tr>
+<tr>
+<td></td>
+<td>-l</td>
+<td>last container</td>
+</tr>
+<tr>
+<td></td>
+<td>-q</td>
+<td>only list IDs</td>
+</tr>
+<tr>
+<td>docker rm</td>
+<td></td>
+<td>remove container</td>
+</tr>
+<tr>
+<td></td>
+<td>docker rm -f `sudo docker ps -a -q`</td>
+<td>remove all container</td>
+</tr>
+<tr>
+<td>docker start</td>
+<td></td>
+<td>start container</td>
+</tr>
+<tr>
+<td>docker attach</td>
+<td></td>
+<td>reattach to the interactive session<br>must start it first</td>
+</tr>
+<tr>
+<td>docker logs</td>
+<td></td>
+<td>access container’s logs</td>
+</tr>
+<tr>
+<td></td>
+<td>-f</td>
+<td>monitor logs; similar as tail -f</td>
+</tr>
+<tr>
+<td></td>
+<td>-t</td>
+<td>output with timestamp</td>
+</tr>
+<tr>
+<td>docker top</td>
+<td></td>
+<td>inspect container’s processes</td>
+</tr>
+<tr>
+<td>docker exec</td>
+<td></td>
+<td>running a process inside an running container</td>
+</tr>
+<tr>
+<td></td>
+<td>-d</td>
+<td>indicate running background process</td>
+</tr>
+<tr>
+<td>docker stats</td>
+<td></td>
+<td>stats info about CPU, memory and network and storage I/O performance and metrics.</td>
+</tr>
+<tr>
+<td>docker inspect</td>
+<td></td>
+<td>print more info</td>
+</tr>
+<tr>
+<td></td>
+<td>-format=</td>
+<td>template of Go</td>
+</tr>
+<tr>
+<td>docker stop</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker port ContainerId</td>
+<td>get mapped port</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Chapter4-Images-amp-Repositories"><a href="#Chapter4-Images-amp-Repositories" class="headerlink" title="Chapter4 Images&amp;Repositories"></a>Chapter4 Images&amp;Repositories</h1><h2 id="4-1-What-is-a-Docker-image"><a href="#4-1-What-is-a-Docker-image" class="headerlink" title="4.1 What is a Docker image?"></a>4.1 What is a Docker image?</h2><h2 id="4-2-4-4-Commands"><a href="#4-2-4-4-Commands" class="headerlink" title="4.2-4.4 Commands"></a>4.2-4.4 Commands</h2><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker images</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker pull</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>docker pull ubuntu:latest</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>docker pull ubuntu:16.04</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>docker pull jamtur01/puppet:16.04</td>
+<td>username/reponame:tag</td>
+</tr>
+<tr>
+<td>docker search</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker login</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker logout</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker commit</td>
+<td></td>
+<td>Create image<br>SHOULD USE Dockerfile instead</td>
+</tr>
+<tr>
+<td></td>
+<td>sudo docker commit -m “A new custom image” -a “James Turnbull” 4aab3ce3cb76 jamtur01/apache2:webserver</td>
+<td>-m: commit message<br>-a: author</td>
+</tr>
+<tr>
+<td>docker history imageId</td>
+<td></td>
+<td>logs about how images created</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-5-Dockerfile"><a href="#4-5-Dockerfile" class="headerlink" title="4.5 Dockerfile"></a>4.5 Dockerfile</h2><ul>
+<li>Two ways to build images<ul>
+<li><code>docker commit</code></li>
+<li>Dockerfile</li>
+</ul>
+</li>
+<li>Dockerfile Workflow<ol>
+<li>runs a container from the image </li>
+<li>runs an instruction and makes a change to the container</li>
+<li>runs the equivalent of <code>docker commit</code> to commit a new layer</li>
+<li>runs a new container from this new image</li>
+<li>repeat 2-4</li>
+</ol>
+</li>
+<li><p>How to build images</p>
+<ul>
+<li><code>docker build -t=&quot;jamtur01/static_web:v1&quot; .</code><ul>
+<li>-t: tag</li>
+<li>.: Dockerfile path<ul>
+<li>local</li>
+<li>Git repo</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>build cache<ul>
+<li>treat previous layers as a cache</li>
+<li><code>--no-cache</code></li>
+<li>templating<ul>
+<li><code>ENV REFRESHED_AT 2019-01-01</code></li>
+<li>update the ENV to ensure instructions below it run</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Instructions </p>
+<ul>
+<li><code>FROM</code><ul>
+<li>specifies an existing base image</li>
+</ul>
+</li>
+<li><code>MAINTAINER</code><ul>
+<li><code>MAINTAINER James Turnbull &quot;james@example.com&quot;</code></li>
+</ul>
+</li>
+<li><code>RUN</code><ul>
+<li>running the command when the container is being built </li>
+<li><code>RUN apt-get install -y nginx</code></li>
+<li><code>RUN [ &quot;apt-get&quot;, &quot; install&quot;, &quot;-y&quot;, &quot;nginx&quot; ]</code></li>
+</ul>
+</li>
+<li><code>EXPOSE</code><ul>
+<li>the application in this container will use this specific port on the container</li>
+</ul>
+</li>
+<li><code>CMD</code><ul>
+<li>specifies the command to run when a container is <code>launched</code></li>
+<li>You can only specify one CMD instruction in a Dockerfile</li>
+<li><code>docker run image command</code> would override CMD in Dockerfile</li>
+<li>These 2 are same<ul>
+<li><code>sudo docker run -i -t jamtur01/static_web /bin/true</code></li>
+<li><code>CMD [&quot;/bin/true&quot;]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>ENTRYPOINT</code></p>
+<ul>
+<li><code>ENTRYPOINT [&quot;/usr/sbin/nginx&quot;]</code></li>
+<li><code>ENTRYPOINT [&quot;/usr/sbin/nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]</code></li>
+<li><p>means <code>/usr/sbin/nginx -g &quot;daemon off;&quot;</code></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># in Dockerfile</span></span><br><span class="line">ENTRYPOINT [<span class="string">"/usr/sbin/nginx"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># command line launch</span></span><br><span class="line">sudo docker run -t -i jamtur01/static_web -g <span class="string">"daemon off;"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if we launch the container with <strong>right</strong> parameter, like <code>-g &quot;daemon off;&quot;</code>, it would override the <code>-h</code>. Or it would display the help message by <code>CMD [&quot;-h&quot;]</code></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT [<span class="string">"/usr/sbin/nginx"</span>]</span><br><span class="line">CMD [<span class="string">"-h"</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>we can override it by <code>docker run --entrypoint</code></p>
+</li>
+</ul>
+</li>
+<li><p><code>WORKDIR</code></p>
+<ul>
+<li><p>Set working directory for <code>RUN</code>, <code>ENTRYPOINT</code>, <code>CMD</code></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /opt/webapp/db</span><br><span class="line">RUN bundle install</span><br><span class="line">WORKDIR /opt/webapp</span><br><span class="line">ENTRYPOINT [ <span class="string">"rackup"</span> ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>we can override it by <code>docker run -w</code> </p>
+</li>
+</ul>
+</li>
+<li><p><code>ENV</code></p>
+<ul>
+<li>environment variables during the image build process</li>
+<li><p>This new environment variable will be used for any subsequent <strong>RUN</strong> instructions</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ENV RVM_PATH /home/rvm/</span><br><span class="line">RUN gem install unicorn</span><br><span class="line"></span><br><span class="line"><span class="comment"># the same as</span></span><br><span class="line">RVM_PATH=/home/rvm/ gem install unicorn</span><br><span class="line"></span><br><span class="line"><span class="comment"># specify multiple envs</span></span><br><span class="line">ENV RVM_PATH=/home/rvm RVM_ARCHFLAGS=<span class="string">"-arch i386"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># can be used in other instructions</span></span><br><span class="line">WORKDIR <span class="variable">$RVM_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># These environment variables will also be persisted into any containers created from your image</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$RVM_PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pass environment variables on runtime</p>
+<ul>
+<li><code>docker run -e &quot;WEB_PORT=8080&quot;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>USER</code></p>
+<ul>
+<li><p>specifies a user that the image should be run as</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">USER user</span><br><span class="line">USER user:group</span><br><span class="line">USER uid</span><br><span class="line">USER uid:gid</span><br><span class="line">USER user:gid</span><br><span class="line">USER uid:group</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>default user is root</p>
+</li>
+<li>can be override by <code>docker run -u</code></li>
+</ul>
+</li>
+<li><code>VOLUMN</code><ul>
+<li>adds volumes to any container created from the image</li>
+<li>see Chapter5&amp;Chapter6</li>
+</ul>
+</li>
+<li><code>ADD</code><ul>
+<li>adds files and directories from our build environment into our image<ul>
+<li>e.g. When installing an application</li>
+</ul>
+</li>
+<li><strong>cannot</strong> ADD files from outside the build directory or context</li>
+<li><code>ADD software.lic /opt/application/software.lic</code></li>
+<li>source file can be<ul>
+<li>URL</li>
+<li>filename</li>
+<li>directory (should end with <code>/</code></li>
+</ul>
+</li>
+<li>Docker will <strong>automatically unpack</strong> <em>tar archive (valid archive types include gzip, bzip2, xz)</em><ul>
+<li><code>ADD latest.tar.gz /var/www/wordpress/</code></li>
+</ul>
+</li>
+<li>If the destination doesn’t exist, Docker will create the full path<ul>
+<li>with mode 0755, UID 0, GID 0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>COPY</code><ul>
+<li>Similar as <code>ADD</code></li>
+<li>But doesn’t extract, decompress</li>
+</ul>
+</li>
+<li><code>LABEL</code><ul>
+<li>Adds metadata to a Docker image</li>
+<li><code>LABEL version=&quot;1.0&quot; location=&quot;NY&quot;</code></li>
+<li>can be found in <code>docker inspect</code></li>
+</ul>
+</li>
+<li><code>STOPSIGNAL</code><ul>
+<li>sets the system call signal that will be sent to the container when you tell it to stop</li>
+</ul>
+</li>
+<li><code>ARG</code><ul>
+<li><strong>defines</strong> variables that can be passed at build-time via the <code>docker build</code> command<ul>
+<li><code>ARG webapp_user=user</code></li>
+</ul>
+</li>
+<li>can be overrided by <code>docker build --build-arg webapp_user=bbb</code>. But has to be predefined in Dockerfile</li>
+<li>Docker predefined ARG variables(we don’t need to define in Dockerfile but pass them by <code>--build-arg</code><ul>
+<li>HTTP_PROXY, http_proxy</li>
+<li>HTTPS_PROXY, https_proxy</li>
+<li>FTP_PROXY, ftp_proxy</li>
+<li>NO_PROXY, no_proxy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>SHELL</code><ul>
+<li>allows the default shell used for the shell form of commands to be overridden<ul>
+<li>default shell on Linux <code>[&quot;/bin/sh&quot;, &quot;-c&quot;]</code></li>
+<li>default shell on Windows <code>[&quot;cmd&quot;, &quot;/S&quot;, &quot;/C&quot;]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>HEALTHCHECK</code><ul>
+<li>how to test a container to check that it is still working correctly</li>
+<li><code>HEALTHCHECK --interval=10s --timeout=1m --retries=5 CMD curl http ://localhost || exit 1</code></li>
+<li>We can also check health by <code>docker inspect</code><ul>
+<li><code>docker inspect --format &#39;{\{.State.Health.Status}}&#39; static_web</code></li>
+</ul>
+</li>
+<li>There can be only 1 health check</li>
+<li>Can also disable it<ul>
+<li><code>HEALTHCHECK NONE</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>ONBUILD</code></p>
+<ul>
+<li>adds triggers to images. </li>
+<li>A trigger is executed when the image is used as the basis of another image</li>
+<li><p>it was specified right after the `FROM instruction</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># basic image Dockerfile</span></span><br><span class="line">FROM ubuntu:16.04</span><br><span class="line">...</span><br><span class="line">ONBUILD ADD . /var/www/</span><br><span class="line"></span><br><span class="line"><span class="comment"># then we build it</span></span><br><span class="line">sudo docker build -t=<span class="string">"jamtur01/apache2"</span> .</span><br><span class="line"></span><br><span class="line"><span class="comment"># next layer image Dockerfile</span></span><br><span class="line">FROM jamtur01/apache2</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># then we build it</span></span><br><span class="line">sudo docker build -t=<span class="string">"jamtur01/webapp"</span> .</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">Step 0 : FROM jamtur01/apache2</span><br><span class="line"><span class="comment"># Executing 1 build triggers</span></span><br><span class="line">Step onbuild-0 : ADD . /var/www/ <span class="comment"># Triggered here</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-6-Pushing-images-to-the-Docker-Hub"><a href="#4-6-Pushing-images-to-the-Docker-Hub" class="headerlink" title="4.6 Pushing images to the Docker Hub"></a>4.6 Pushing images to the Docker Hub</h2><ul>
+<li><p>Pushing images</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># failed: because Root repositories are managed only by the Docker</span></span><br><span class="line">sudo docker push static_web</span><br><span class="line"></span><br><span class="line"><span class="comment"># success</span></span><br><span class="line">sudo docker push jamtur01/static_web</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Automated Builds</p>
+<ul>
+<li>connecting a GitHub or BitBucket repository containing a Dockerfile to the Docker Hub  </li>
+<li>When we push to this repository, an image build will be triggered and a new image created</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-7-Deleting-an-image"><a href="#4-7-Deleting-an-image" class="headerlink" title="4.7 Deleting an image"></a>4.7 Deleting an image</h2><ul>
+<li>Local<ul>
+<li><code>sudo docker rmi jamtur01/static_web</code></li>
+</ul>
+</li>
+<li>Repo<ul>
+<li>go to web page</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-8-Running-your-own-Docker-registry"><a href="#4-8-Running-your-own-Docker-registry" class="headerlink" title="4.8 Running your own Docker registry"></a>4.8 Running your own Docker registry</h2><ul>
+<li><p>Steps</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. launch a container running version 2.0 of the registry application and bind port 5000 to the local host</span></span><br><span class="line">docker run -d -p 5000:5000 --name registry registry:2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. get image ID</span></span><br><span class="line">sudo docker images jamtur01/static_web</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. Tagging our image for our new registry</span></span><br><span class="line">sudo docker tag 22d47c8cb6e5 docker.example.com:5000/jamtur01/ static_web</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. sudo docker push docker.example.com:5000/jamtur01/static_web</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. launch container from local registry</span></span><br><span class="line">sudo docker run -t -i docker.example.com:5000/jamtur01/ static_web /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-9-Alternative-Indexes"><a href="#4-9-Alternative-Indexes" class="headerlink" title="4.9 Alternative Indexes"></a>4.9 Alternative Indexes</h2><ul>
+<li>Quay<ul>
+<li>provides a private hosted registry that allows you to upload both public and private containers.</li>
+</ul>
+</li>
+</ul>
+<h1 id="Chapter5-Testing-with-Docker"><a href="#Chapter5-Testing-with-Docker" class="headerlink" title="Chapter5 Testing with Docker"></a>Chapter5 Testing with Docker</h1><h2 id="5-1-Using-Docker-to-test-a-static-website"><a href="#5-1-Using-Docker-to-test-a-static-website" class="headerlink" title="5.1 Using Docker to test a static website"></a>5.1 Using Docker to test a static website</h2><ul>
+<li>Workflow<ul>
+<li>create Dockerfile to<ul>
+<li>install Nginx</li>
+<li>add Nginx configuration files</li>
+<li>Expose port</li>
+</ul>
+</li>
+<li>build image</li>
+<li>build container from the image</li>
+<li><code>sudo docker run -d -p 80 --name website \ -v $PWD/website:/var/www/html/website:ro \ jamtur01/nginx nginx</code></li>
+</ul>
+</li>
+<li><code>-v</code><ul>
+<li>create a volume in our container from a directory on the host</li>
+<li>provide persistent or <strong>shared data</strong> for Docker. This means that changes to a volume are made directly and bypass the image</li>
+<li>Use case<ul>
+<li>We want to work on and test it simultaneously.</li>
+<li>It changes frequently, and we don’t want to rebuild the image during our development process.</li>
+<li>We want to share the code between multiple containers.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>ro</code>, <code>rw</code><ul>
+<li>read-write status</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-Using-Docker-to-build-and-test-a-web-application"><a href="#5-2-Using-Docker-to-build-and-test-a-web-application" class="headerlink" title="5.2 Using Docker to build and test a web application"></a>5.2 Using Docker to build and test a web application</h2><ul>
+<li>Naive webapp<ol>
+<li>create image<ol>
+<li>install sinatra redis</li>
+<li>expose port</li>
+<li>run <code>/opt/webapp/bin/webapp</code></li>
+</ol>
+</li>
+<li>build image</li>
+<li>download webapp</li>
+<li>launch container with <code>-v $PWD/webapp:/opt/webapp/</code> </li>
+</ol>
+</li>
+<li><p>Webapp with Redis</p>
+<ol>
+<li>Prepare Redis server<ol>
+<li>create image for redis server<ol>
+<li>install redis-server</li>
+<li>expose port</li>
+<li>ENTRYPOINT to run redis-server</li>
+</ol>
+</li>
+<li>Test if it works<ol>
+<li>launch redis server container</li>
+<li>install redis-cli locally to test with localhost:exposedPort</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Prepare Docker Networking<ol>
+<li>create a bridge network called <code>app</code></li>
+<li>launch a Redis container called <code>db</code> inside the network</li>
+<li>Test if it works<ol>
+<li>launch another container inside of the network</li>
+<li>install <code>dnsutils</code>, <code>iputils-ping</code></li>
+<li><code>nslookup db</code>, <code>ping db.app</code><ul>
+<li>any host in the <code>app</code> network can be resolved by <code>hostname.app</code> </li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Prepare Sinatra application <ol>
+<li>download new webapp_redis<ol>
+<li>create connection to Redis database on a host called db on port 6379</li>
+<li>with GET, POST API</li>
+</ol>
+</li>
+<li>launch Sinatra application inside <code>app</code> network with <code>-v $PWD/webapp_redis</code></li>
+</ol>
+</li>
+<li>Test<ol>
+<li>POST to Sinatra application, which store parameters in Redis</li>
+<li>GET to Sinatra application, which fetch parameters in Redis</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Docker Networking</p>
+<ul>
+<li>Docker Networking can connect containers to each other across different hosts.</li>
+<li>Containers connected via Docker Networking can be stopped, started or restarted without needing to update connections.</li>
+<li>With Docker Networking you don’t need to create a container before you can connect to it. You also don’t need to worry about the order in which you run containers and you get internal container name resolution and discovery inside the network.</li>
+</ul>
+</li>
+<li><p>Commands</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker network ls</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>docker network create</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>docker network inspect</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>docker network rm</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>docker network connect $NETWORK $CONTAINER</code></td>
+<td>add already running container to existing networks</td>
+</tr>
+<tr>
+<td><code>docker network disconnect $NETWORK $CONTAINER</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-3-Using-Docker-for-continuous-integration"><a href="#5-3-Using-Docker-for-continuous-integration" class="headerlink" title="5.3 Using Docker for continuous integration"></a>5.3 Using Docker for continuous integration</h2><ol>
+<li>Create&amp;Build Jenkins&amp;Docker image<ol>
+<li>Use jenkins image</li>
+<li>install docker</li>
+<li>install plugins</li>
+</ol>
+</li>
+<li>Create Jenkin’s configuration folder<ol>
+<li>locally create a jenkins folder(<code>jenkins_home</code>)</li>
+</ol>
+</li>
+<li>Run container(up Jenkins server)<ul>
+<li>mount <code>jenkins_home</code>: perpetuate Jenkin’s configuration</li>
+<li>mount <code>docker.sock</code>: run Docker containers from inside our Jenkins container</li>
+</ul>
+</li>
+<li>Create Jenkins job<ol>
+<li>set workspace as <code>jenkins_home/xxx</code></li>
+<li>set Source Code as a git repo</li>
+<li>Add Build Step<ol>
+<li>build image which is in <code>workspace</code></li>
+<li>run container<ol>
+<li>mount <code>workspace</code> into Build Docker</li>
+<li>Build&amp;RunTests </li>
+<li>attach container to see output</li>
+<li><code>docker wait</code></li>
+<li>rm container</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Add post-build action<ul>
+<li>to publish test report</li>
+</ul>
+</li>
+<li>Enabling SCM polling<ul>
+<li>triggers automatic build when new commits made to the repo</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-4-Multi-configuration-Jenkins"><a href="#5-4-Multi-configuration-Jenkins" class="headerlink" title="5.4 Multi-configuration Jenkins"></a>5.4 Multi-configuration Jenkins</h2><p><strong>What if we wanted to test our application on Ubuntu, Debian and CentOS?</strong></p>
+<ol>
+<li><code>new job</code> as <code>Multi-configuration project</code></li>
+<li><code>Add Axis</code> as {<code>OS</code>: {<code>centos</code>, <code>debian</code>, <code>ubuntu</code>}}</li>
+<li><code>Build Environment</code> as <code>Delete workspace before build starts</code></li>
+<li>In code repo, create <code>centos</code>, <code>debian</code>, <code>ubuntu</code> folders, create Dockfile in each of them</li>
+<li>Add Build Step<ol>
+<li><code>cd $OS</code> before doing anything</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-5-Other-alternatives"><a href="#5-5-Other-alternatives" class="headerlink" title="5.5 Other alternatives"></a>5.5 Other alternatives</h2><p>i.e. other CI tools other than Jenkins</p>
+<ul>
+<li>Drone</li>
+<li>Shippable</li>
+</ul>
+<h1 id="Chapter-6-Building-services-with-Docker"><a href="#Chapter-6-Building-services-with-Docker" class="headerlink" title="Chapter 6 Building services with Docker"></a>Chapter 6 Building services with Docker</h1><h2 id="6-1-Building-our-first-application"><a href="#6-1-Building-our-first-application" class="headerlink" title="6.1 Building our first application"></a>6.1 Building our first application</h2><p><strong>Volume</strong> is a specially designated directory within one or more containers that bypasses the Union File System to provide several useful features for <strong>persistent</strong> or <strong>shared</strong> data:</p>
+<ul>
+<li>Volumes can be <strong>shared</strong> and reused <strong>between</strong> containers.</li>
+<li>A container <strong>doesn’t have to be running</strong> to share its volumes.</li>
+<li>Changes to a volume are made directly.</li>
+<li>Changes to a volume will <strong>not be included</strong> when you <strong>update an image</strong>. </li>
+<li>Volumes <strong>persist</strong> even when no containers use them.<br>  This allows you to add data (e.g., source code, a database, or other content) into an image without committing it to the image and allows you to share that data between containers.</li>
+<li>Volumes live in Docker host <code>var/lib/docker/volumes</code></li>
+</ul>
+<ol>
+<li>Build Jekyll-Apache application<ol>
+<li>Build Jekyll image<ul>
+<li><code>VOLUMN /data</code>: hold source code(why??)</li>
+<li><code>VOLUMN /var/www/html</code>: hold compiled Jekyll site</li>
+<li><code>ENTRYPOINT</code> to compile Jekyll to <code>/var/www/html</code></li>
+</ul>
+</li>
+<li>Build Apache image<ul>
+<li><code>VOLUMN /var/www/html</code>: compiled Jekyll site</li>
+<li>run apache by default</li>
+</ul>
+</li>
+<li>Pull Git code locally</li>
+<li>Creating Jekyll container with <code>-v codeInStep3:/data/</code></li>
+<li>Creating Apache container with <code>--volumns-from containerInStep4</code></li>
+</ol>
+</li>
+<li>Update Jekyll website<ol>
+<li>Locally, update title then <code>sudo docker start james_blog</code><ul>
+<li>local source code updated</li>
+<li>source code mounted into Jekyll</li>
+<li><code>start Jekyll</code> to recompile into <code>/var/www/html</code></li>
+<li><code>Jekyll</code> exit automatically</li>
+<li><code>Jekyll</code> volume into <code>Apache</code> automatically</li>
+<li>then pages are updated</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Back up Jekyll volume<ul>
+<li><code>sudo docker run --rm --volumes-from james_blog \ -v $(pwd):/backup ubuntu tar cvf /backup/james_blog_backup.tar /var/www/html</code><ul>
+<li><code>--rm</code>: automatically deletes the container after the process running in it is ended</li>
+<li>It creates a new container to <code>volumes-from</code> blog</li>
+<li>tar the blog</li>
+<li>mounted the tared blog to local </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Potential extention<ol>
+<li>Web cluster: run multiple Apache container, all which use the same volume from the <code>james_blog</code> container</li>
+<li>Generic and portable solution: make a new image to clone and mount code into <code>Jekyll</code>. So that we don’t need to install git and any source code locally</li>
+<li>Based on 2, we can build a web front end for our service that build and deployed sites automatically from a specific source</li>
+</ol>
+</li>
+</ol>
+<h2 id="6-2-Building-a-Java-application-server"><a href="#6-2-Building-a-Java-application-server" class="headerlink" title="6.2 Building a Java application server"></a>6.2 Building a Java application server</h2><p>Fetching and running a Java application from a <code>WAR</code> file in a Tomcat server（Web application ARchive, we can run it directory after putting in tomcat webapp direcory)</p>
+<ol>
+<li>Build a WAR file fetcher<ol>
+<li>VOLUME <code>/var/lib/tomcat7/webapps/</code></li>
+<li><code>wget</code> into the volumed dir without url</li>
+<li>Creating fetcher container with url</li>
+</ol>
+</li>
+<li>Build tomcat server<ol>
+<li>VOLUME <code>/var/lib/tomcat7/webapps/</code></li>
+<li>ENTRYPOINT to run tomcat</li>
+<li>Creating tomcat container by <code>--volumes-from fetcherContainer</code></li>
+</ol>
+</li>
+<li>An extention by author<ol>
+<li>He made an app called <code>Tprov</code>, which is a web application using for controlling step1</li>
+<li>so we can input web name, WAR url and click submit</li>
+<li>then we can see running state</li>
+</ol>
+</li>
+</ol>
+<h2 id="6-3-A-multi-container-application-stack"><a href="#6-3-A-multi-container-application-stack" class="headerlink" title="6.3 A multi-container application stack"></a>6.3 A multi-container application stack</h2><ul>
+<li><p>A big combination</p>
+<ul>
+<li>A Node container: Node application</li>
+<li>A Redis primary container: hold and cluster our state</li>
+<li>2 Redis replica container to cluster our state</li>
+<li>A logging container to capture our application logs</li>
+</ul>
+</li>
+<li><p>Node container</p>
+<ol>
+<li>download nodeapp to hold application code<ul>
+<li>right stream to <code>/var/log/nodeapp/nodeapp.log</code></li>
+<li>store session in redis</li>
+<li>a GET method</li>
+</ul>
+</li>
+<li>Dockerfile<ul>
+<li>install nodejs npm</li>
+<li>mkdir <code>/var/log/nodeapp</code> and VOLUME it</li>
+<li><code>ADD nodeapp /opt/nodeapp</code></li>
+<li>ENTRYPOINT <code>nodejs server.js</code></li>
+</ul>
+</li>
+<li>run Node container <ul>
+<li><code>-p 3000:3000 --net express</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Redis container<ul>
+<li>Redis base image<ol>
+<li>VOLUME <code>var/lib/redis</code></li>
+<li>VOLUME <code>var/log/redis</code></li>
+</ol>
+</li>
+<li>Primary Redis image<ol>
+<li>only ENTRYPOINT that runs the default Redis server, which logs into <code>var/log/redis/redis-server.log</code></li>
+</ol>
+</li>
+<li>Replica Redis image<ol>
+<li>only ENTRYPOINT that runs a Redis replica server, which logs into <code>var/log/redis/redis-replica.log</code></li>
+<li><code>--slaveof redis_primary 6379</code>: this is a replica of the <code>redis_primary</code> host and should attempt replication on port <code>6379</code></li>
+</ol>
+</li>
+<li>Creating Redis back-end cluster<ol>
+<li>create express network</li>
+<li>run <code>redis_primary</code> in <code>--net express</code></li>
+<li>run <code>redis_replica1 --net express</code></li>
+<li>run <code>redis_replica2 --net express</code></li>
+<li>We can read primary Redis logs by<ul>
+<li><code>sudo docker run -ti --rm --volumes-from redis_primary ubuntu cat /var/log/redis/redis-server.log</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>Capture application logs using <code>Logstash</code><ol>
+<li>Dockerfile <ol>
+<li>install <code>logstash</code></li>
+<li>add <code>logstash.conf</code> in container<ul>
+<li>monitor logs file</li>
+<li>output stdout </li>
+</ul>
+</li>
+<li>run logstash</li>
+</ol>
+</li>
+<li>create log app container<ol>
+<li>volumes-from redis_primary and nodeapp</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="6-4-Managing-Docker-containers-without-SSH"><a href="#6-4-Managing-Docker-containers-without-SSH" class="headerlink" title="6.4 Managing Docker containers without SSH"></a>6.4 Managing Docker containers without SSH</h2><p><code>sudo docker exec -ti nodeapp /bin/bash</code></p>
+<h1 id="Chapter7-Docker-Orchestration-and-Service-Discovery"><a href="#Chapter7-Docker-Orchestration-and-Service-Discovery" class="headerlink" title="Chapter7 Docker Orchestration and Service Discovery"></a>Chapter7 Docker Orchestration and Service Discovery</h1><h2 id="7-1-Docker-Compose"><a href="#7-1-Docker-Compose" class="headerlink" title="7.1 Docker Compose"></a>7.1 Docker Compose</h2><ul>
+<li>Define a set of containers to boot up and their runtime properties in a YAML file</li>
+<li><p>this can make constructing applications from multiple Docker containers.</p>
+</li>
+<li><p>Example</p>
+<ul>
+<li><p><code>docker-compose.yml</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    image: jamtur01/composeapp</span><br><span class="line">    command: python app.py</span><br><span class="line">    ports:</span><br><span class="line">     - &quot;5000:5000&quot;</span><br><span class="line">    volumes:</span><br><span class="line">     - .:/composeapp</span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>requirements.txt</code></p>
+<ul>
+<li>for <code>pip install</code> in Dockerfile</li>
+</ul>
+</li>
+<li><code>app.py</code><ul>
+<li>application file</li>
+</ul>
+</li>
+<li><code>Dockerfile</code> for <code>docker compose</code><ul>
+<li>copy everything into <code>/composeapp</code></li>
+<li><code>pip install requirements.txt</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Commands</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker-compose up</code></td>
+</tr>
+<tr>
+<td><code>docker-compose ps</code></td>
+</tr>
+<tr>
+<td><code>docker-compose logs</code></td>
+</tr>
+<tr>
+<td><code>docker-compose kill</code></td>
+</tr>
+<tr>
+<td><code>docker-compose stop</code></td>
+</tr>
+<tr>
+<td><code>docker-compose start</code></td>
+</tr>
+<tr>
+<td><code>docker-compose rm</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-2-Distributed-application"><a href="#7-2-Distributed-application" class="headerlink" title="7.2 Distributed application"></a>7.2 Distributed application</h2><p>using <code>Consul</code>: seems could be replaced by <code>Docker Swarm</code>(no need for <code>Service Discory</code></p>
+<h2 id="7-3-Docker-Swarm"><a href="#7-3-Docker-Swarm" class="headerlink" title="7.3 Docker Swarm"></a>7.3 Docker Swarm</h2><ul>
+<li>Basic Concept</li>
+<li>A swarm is made up of manager and worker nodes. </li>
+<li>Manager do the dispatching and organizing of work on the swarm.</li>
+<li>We can have many managers, many workers, but only one leader</li>
+<li>Assume we are going to have <code>Manager</code>, <code>Worker1</code>, <code>Worker2</code></li>
+<li>Can be used as <code>Load balancing</code></li>
+</ul>
+<p><img src="/2020/01/03/The-Docker-Book-Learning-Note/swarm-diagram.png" alt="Swarm"><br><img src="/2020/01/03/The-Docker-Book-Learning-Note/services-diagram.png" alt="Services"></p>
+<ul>
+<li>Commands</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker node ls</td>
+<td></td>
+</tr>
+<tr>
+<td>docker service create</td>
+<td><code>--mode global</code>: global services run on every worker in the swarm</td>
+<td></td>
+</tr>
+<tr>
+<td>docker service scale</td>
+<td>how many tasks to work </td>
+</tr>
+<tr>
+<td>docker service rm</td>
+<td></td>
+</tr>
+<tr>
+<td>docker service ls</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Setting up a Swarm<ul>
+<li>In Manager<ol>
+<li>get public ip</li>
+<li>`sudo docker swarm init –advertise-addr $PUBLIC_IP </li>
+</ol>
+</li>
+<li>In worker nodes<ol>
+<li><code>sudo docker join ...</code></li>
+</ol>
+</li>
+<li>Running a service on Swarm<ol>
+<li><code>sudo docker service create --replicas 2 --name ... ubuntu /bin/sh -c &quot;...&quot;</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-4-Orchestration-alternatives-and-components"><a href="#7-4-Orchestration-alternatives-and-components" class="headerlink" title="7.4 Orchestration alternatives and components"></a>7.4 Orchestration alternatives and components</h2><table>
+<thead>
+<tr>
+<th>Tool Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fleet</td>
+<td>cluster management tool</td>
+</tr>
+<tr>
+<td>etcd</td>
+<td>key value store for shared configuration and service discovery</td>
+</tr>
+<tr>
+<td>Kubernetes</td>
+<td>cluster management tool open sourced by Google</td>
+</tr>
+<tr>
+<td>Apache Mesos</td>
+<td>cluster management tool</td>
+</tr>
+<tr>
+<td>Helios</td>
+<td>deploying and managing containers across an entire fleet</td>
+</tr>
+<tr>
+<td>Genturion</td>
+<td>takes containers from a Docker registry and runs them on a fleet of hosts with the correct environment variables, host volume mappings, and port mappings. <br>It is designed to help you do continuous deployment with Docker.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Chapter8-Using-the-Docker-API"><a href="#Chapter8-Using-the-Docker-API" class="headerlink" title="Chapter8 Using the Docker API"></a>Chapter8 Using the Docker API</h1><h2 id="8-1-Docker-APIs"><a href="#8-1-Docker-APIs" class="headerlink" title="8.1 Docker APIs"></a>8.1 Docker APIs</h2><ul>
+<li>Registry API<ul>
+<li>provides integration with the Docker registry</li>
+</ul>
+</li>
+<li>Docker Hub API<ul>
+<li>provides integration with the Docker Hub</li>
+</ul>
+</li>
+<li>Docker Remote API<ul>
+<li>provides integration with the Docker daemon</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-2-First-steps-with-Remote-API"><a href="#8-2-First-steps-with-Remote-API" class="headerlink" title="8.2 First steps with Remote API"></a>8.2 First steps with Remote API</h2><ul>
+<li>the Remote API is provided by the Docker daemon</li>
+<li>the Docker daemons binds to a socket, <code>unix:///var/run/docker.sock</code></li>
+<li>we can edit the daemon’s startup configuration files to change the bind</li>
+<li>then <code>sudo systemctl --system daemon-reload</code></li>
+<li>test with <code>sudo docker -H docker.example.com:port info</code><ul>
+<li>we can also <code>export DOCKER_HOST=&quot;xxx&quot;</code> to throw the <code>-H</code> away</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-3-Testing-the-Docker-Remote-API"><a href="#8-3-Testing-the-Docker-Remote-API" class="headerlink" title="8.3 Testing the Docker Remote API"></a>8.3 Testing the Docker Remote API</h2><table>
+<thead>
+<tr>
+<th>API</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>curl http://docker.example.com:port/info</code></td>
+<td><code>docker info</code></td>
+</tr>
+<tr>
+<td><code>curl http://docker.example.com:port/images/json</code></td>
+<td><code>docker images</code></td>
+</tr>
+<tr>
+<td><code>curl http://docker.example.com:port/images/${id}/json</code></td>
+<td>`docker images ${id}</td>
+</tr>
+<tr>
+<td><code>curl http://docker.example.com:port/images/search?term=...</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>curl http://docker.example.com:port/containers/json</code></td>
+<td><code>docker ps</code></td>
+</tr>
+<tr>
+<td><code>curl http://docker.example.com:port/containers/json?all=1</code></td>
+<td><code>docker ps -a</code></td>
+</tr>
+<tr>
+<td>…</td>
+<td>some more POST to launch/create/run</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-4-Improving-the-TProv-application"><a href="#8-4-Improving-the-TProv-application" class="headerlink" title="8.4 Improving the TProv application"></a>8.4 Improving the TProv application</h2><p>by ruby-docker API, for example</p>
+<h2 id="8-5-Authenticating-the-Docker-Remote-API"><a href="#8-5-Authenticating-the-Docker-Remote-API" class="headerlink" title="8.5 Authenticating the Docker Remote API"></a>8.5 Authenticating the Docker Remote API</h2><ul>
+<li>Create a certificate authority</li>
+<li>Create a server certificate signing request and key</li>
+<li><p>Configure the docker daemon</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/docker -d -H tcp://0.0.0.0:2376 --tlsverify -- tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server-cert. pem --tlskey=/etc/docker/server-key.pem</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Create a client certificate and key</p>
+</li>
+<li><p>Configure the docker client using the certificates and keys</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.docker/</span><br><span class="line">cp ca.pem ~/.docker/ca.pem</span><br><span class="line">cp client-key.pem ~/.docker/key.pem</span><br><span class="line">cp client-cert.pem ~/.docker/cert.pem</span><br><span class="line">chmod 0600 ~/.docker/key.pem ~/.docker/cert.pem</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Testing</p>
+<ul>
+<li><code>sudo docker -H=docker.example.com:2376 --tlsverify info</code></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/09/Understanding-ES6-Learning-Note/" rel="next" title="Understanding ES6 Learning Note">
+                <i class="fa fa-chevron-left"></i> Understanding ES6 Learning Note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="呆阿呆阿呆">
+            
+              <p class="site-author-name" itemprop="name">呆阿呆阿呆</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter1-Introduction"><span class="nav-text">Chapter1 Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter2-Installation"><span class="nav-text">Chapter2 Installation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter3-Getting-Start"><span class="nav-text">Chapter3 Getting Start</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Commands"><span class="nav-text">Commands</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter4-Images-amp-Repositories"><span class="nav-text">Chapter4 Images&amp;Repositories</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-What-is-a-Docker-image"><span class="nav-text">4.1 What is a Docker image?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-4-4-Commands"><span class="nav-text">4.2-4.4 Commands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-Dockerfile"><span class="nav-text">4.5 Dockerfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-Pushing-images-to-the-Docker-Hub"><span class="nav-text">4.6 Pushing images to the Docker Hub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-Deleting-an-image"><span class="nav-text">4.7 Deleting an image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-8-Running-your-own-Docker-registry"><span class="nav-text">4.8 Running your own Docker registry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-9-Alternative-Indexes"><span class="nav-text">4.9 Alternative Indexes</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter5-Testing-with-Docker"><span class="nav-text">Chapter5 Testing with Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-Using-Docker-to-test-a-static-website"><span class="nav-text">5.1 Using Docker to test a static website</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-Using-Docker-to-build-and-test-a-web-application"><span class="nav-text">5.2 Using Docker to build and test a web application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-Using-Docker-for-continuous-integration"><span class="nav-text">5.3 Using Docker for continuous integration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-Multi-configuration-Jenkins"><span class="nav-text">5.4 Multi-configuration Jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-Other-alternatives"><span class="nav-text">5.5 Other alternatives</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-6-Building-services-with-Docker"><span class="nav-text">Chapter 6 Building services with Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Building-our-first-application"><span class="nav-text">6.1 Building our first application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Building-a-Java-application-server"><span class="nav-text">6.2 Building a Java application server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-A-multi-container-application-stack"><span class="nav-text">6.3 A multi-container application stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Managing-Docker-containers-without-SSH"><span class="nav-text">6.4 Managing Docker containers without SSH</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter7-Docker-Orchestration-and-Service-Discovery"><span class="nav-text">Chapter7 Docker Orchestration and Service Discovery</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-Docker-Compose"><span class="nav-text">7.1 Docker Compose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-Distributed-application"><span class="nav-text">7.2 Distributed application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-Docker-Swarm"><span class="nav-text">7.3 Docker Swarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-Orchestration-alternatives-and-components"><span class="nav-text">7.4 Orchestration alternatives and components</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter8-Using-the-Docker-API"><span class="nav-text">Chapter8 Using the Docker API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-Docker-APIs"><span class="nav-text">8.1 Docker APIs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-First-steps-with-Remote-API"><span class="nav-text">8.2 First steps with Remote API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-Testing-the-Docker-Remote-API"><span class="nav-text">8.3 Testing the Docker Remote API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-Improving-the-TProv-application"><span class="nav-text">8.4 Improving the TProv application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-5-Authenticating-the-Docker-Remote-API"><span class="nav-text">8.5 Authenticating the Docker Remote API</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">呆阿呆阿呆</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
